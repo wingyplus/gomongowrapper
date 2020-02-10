@@ -23,6 +23,8 @@ import (
 	"go.opencensus.io/stats/view"
 	"go.opencensus.io/tag"
 	"go.opencensus.io/trace"
+
+	apitrace "go.opentelemetry.io/otel/api/trace"
 )
 
 var (
@@ -67,18 +69,20 @@ type spanWithMetrics struct {
 	startTime time.Time
 	method    string
 	lastErr   error
-	span      *trace.Span
+	span      apitrace.Span
 	endOnce   sync.Once
 }
 
 func roundtripTrackingSpan(ctx context.Context, methodName string, traceOpts ...trace.StartOption) (context.Context, *spanWithMetrics) {
-	ctx, span := trace.StartSpan(ctx, methodName, traceOpts...)
+	ctx, span := apitrace.SpanFromContext(ctx).Tracer().Start(ctx, methodName)
+	// ctx, span := trace.StartSpan(ctx, methodName, traceOpts...)
 	return ctx, &spanWithMetrics{span: span, startTime: time.Now(), method: methodName}
 }
 
 func (swm *spanWithMetrics) setError(err error) {
 	if err != nil {
-		swm.span.SetStatus(trace.Status{Code: trace.StatusCodeUnknown, Message: err.Error()})
+		// TODO: make it work on opentelemetry.
+		// swm.span.SetStatus(trace.Status{Code: trace.StatusCodeUnknown, Message: err.Error()})
 	}
 	swm.lastErr = err
 }
