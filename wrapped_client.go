@@ -40,7 +40,7 @@ func (wc *WrappedClient) Connect(ctx context.Context) error {
 
 	err := wc.cc.Connect(ctx)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return err
 }
@@ -59,7 +59,7 @@ func (wc *WrappedClient) Disconnect(ctx context.Context) error {
 
 	err := wc.cc.Disconnect(ctx)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return err
 }
@@ -70,7 +70,7 @@ func (wc *WrappedClient) ListDatabaseNames(ctx context.Context, filter interface
 
 	dbs, err := wc.cc.ListDatabaseNames(ctx, filter, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return dbs, err
 }
@@ -81,7 +81,7 @@ func (wc *WrappedClient) ListDatabases(ctx context.Context, filter interface{}, 
 
 	dbr, err := wc.cc.ListDatabases(ctx, filter, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return dbr, err
 }
@@ -92,7 +92,7 @@ func (wc *WrappedClient) Ping(ctx context.Context, rp *readpref.ReadPref) error 
 
 	err := wc.cc.Ping(ctx, rp)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return err
 }

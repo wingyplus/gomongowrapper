@@ -31,7 +31,7 @@ func (wc *WrappedCollection) Aggregate(ctx context.Context, pipeline interface{}
 
 	cur, err := wc.coll.Aggregate(ctx, pipeline, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return cur, err
 }
@@ -42,7 +42,7 @@ func (wc *WrappedCollection) BulkWrite(ctx context.Context, models []mongo.Write
 
 	bwres, err := wc.coll.BulkWrite(ctx, models, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return bwres, err
 }
@@ -56,7 +56,7 @@ func (wc *WrappedCollection) Count(ctx context.Context, filter interface{}, opts
 	defer span.end(ctx)
 	count, err := wc.coll.CountDocuments(ctx, filter, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return count, err
 }
@@ -67,7 +67,7 @@ func (wc *WrappedCollection) CountDocuments(ctx context.Context, filter interfac
 
 	count, err := wc.coll.CountDocuments(ctx, filter, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return count, err
 }
@@ -80,7 +80,7 @@ func (wc *WrappedCollection) DeleteMany(ctx context.Context, filter interface{},
 
 	dmres, err := wc.coll.DeleteMany(ctx, filter, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return dmres, err
 }
@@ -91,7 +91,7 @@ func (wc *WrappedCollection) DeleteOne(ctx context.Context, filter interface{}, 
 
 	dor, err := wc.coll.DeleteOne(ctx, filter, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return dor, err
 }
@@ -102,7 +102,7 @@ func (wc *WrappedCollection) Distinct(ctx context.Context, fieldName string, fil
 
 	distinct, err := wc.coll.Distinct(ctx, fieldName, filter, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return distinct, err
 }
@@ -113,7 +113,7 @@ func (wc *WrappedCollection) Drop(ctx context.Context) error {
 
 	err := wc.coll.Drop(ctx)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return err
 }
@@ -124,7 +124,7 @@ func (wc *WrappedCollection) EstimatedDocumentCount(ctx context.Context, opts ..
 
 	count, err := wc.coll.EstimatedDocumentCount(ctx, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return count, err
 }
@@ -135,7 +135,7 @@ func (wc *WrappedCollection) Find(ctx context.Context, filter interface{}, opts 
 
 	cur, err := wc.coll.Find(ctx, filter, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return cur, err
 }
@@ -176,7 +176,7 @@ func (wc *WrappedCollection) InsertMany(ctx context.Context, documents []interfa
 
 	insmres, err := wc.coll.InsertMany(ctx, documents, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return insmres, err
 }
@@ -187,7 +187,7 @@ func (wc *WrappedCollection) InsertOne(ctx context.Context, document interface{}
 
 	insores, err := wc.coll.InsertOne(ctx, document, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return insores, err
 }
@@ -200,7 +200,7 @@ func (wc *WrappedCollection) ReplaceOne(ctx context.Context, filter, replacement
 
 	repres, err := wc.coll.ReplaceOne(ctx, filter, replacement, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return repres, err
 }
@@ -211,7 +211,7 @@ func (wc *WrappedCollection) UpdateMany(ctx context.Context, filter, replacement
 
 	umres, err := wc.coll.UpdateMany(ctx, filter, replacement, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return umres, err
 }
@@ -222,7 +222,7 @@ func (wc *WrappedCollection) UpdateOne(ctx context.Context, filter, replacement 
 
 	uores, err := wc.coll.UpdateOne(ctx, filter, replacement, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return uores, err
 }
@@ -233,7 +233,7 @@ func (wc *WrappedCollection) Watch(ctx context.Context, pipeline interface{}, op
 
 	cs, err := wc.coll.Watch(ctx, pipeline, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return cs, err
 }

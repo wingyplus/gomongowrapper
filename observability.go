@@ -16,6 +16,7 @@ package mongowrapper
 
 import (
 	"context"
+	"reflect"
 	"sync"
 	"time"
 
@@ -23,7 +24,9 @@ import (
 	"go.opencensus.io/stats/view"
 	"go.opencensus.io/tag"
 	"go.opencensus.io/trace"
+	"google.golang.org/grpc/codes"
 
+	"go.opentelemetry.io/otel/api/core"
 	apitrace "go.opentelemetry.io/otel/api/trace"
 )
 
@@ -79,10 +82,20 @@ func roundtripTrackingSpan(ctx context.Context, methodName string, traceOpts ...
 	return ctx, &spanWithMetrics{span: span, startTime: time.Now(), method: methodName}
 }
 
-func (swm *spanWithMetrics) setError(err error) {
+func (swm *spanWithMetrics) setError(ctx context.Context, err error) {
+	// TODO: modify setError to accept context.
 	if err != nil {
-		// TODO: make it work on opentelemetry.
-		// swm.span.SetStatus(trace.Status{Code: trace.StatusCodeUnknown, Message: err.Error()})
+		swm.span.SetStatus(codes.Unknown)
+		swm.span.AddEvent(ctx, "error",
+			core.KeyValue{
+				Key:   "error.type",
+				Value: core.String(reflect.TypeOf(err).String()),
+			},
+			core.KeyValue{
+				Key:   "error.message",
+				Value: core.String(err.Error()),
+			},
+		)
 	}
 	swm.lastErr = err
 }

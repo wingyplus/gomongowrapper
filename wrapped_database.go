@@ -58,7 +58,7 @@ func (wd *WrappedDatabase) Drop(ctx context.Context) error {
 
 	err := wd.db.Drop(ctx)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return err
 }
@@ -69,7 +69,7 @@ func (wd *WrappedDatabase) ListCollections(ctx context.Context, filter interface
 
 	cur, err := wd.db.ListCollections(ctx, filter, opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return cur, err
 }

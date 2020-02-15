@@ -46,7 +46,7 @@ func (ws *WrappedSession) AbortTransaction(ctx context.Context) error {
 
 	err := ws.Session.AbortTransaction(ctx)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return err
 }
@@ -57,7 +57,7 @@ func (ws *WrappedSession) CommitTransaction(ctx context.Context) error {
 
 	err := ws.Session.CommitTransaction(ctx)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 	return err
 }

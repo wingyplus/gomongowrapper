@@ -27,13 +27,13 @@ func Connect(ctx context.Context, opts ...*options.ClientOptions) (*WrappedClien
 
 	cc, err := mongo.NewClient(opts...)
 	if err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 		return nil, err
 	}
 
 	wc := &WrappedClient{cc: cc}
 	if err := wc.Connect(ctx); err != nil {
-		span.setError(err)
+		span.setError(ctx, err)
 	}
 
 	return wc, err
