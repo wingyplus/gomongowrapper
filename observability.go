@@ -78,12 +78,10 @@ type spanWithMetrics struct {
 
 func roundtripTrackingSpan(ctx context.Context, methodName string, traceOpts ...trace.StartOption) (context.Context, *spanWithMetrics) {
 	ctx, span := apitrace.SpanFromContext(ctx).Tracer().Start(ctx, methodName)
-	// ctx, span := trace.StartSpan(ctx, methodName, traceOpts...)
 	return ctx, &spanWithMetrics{span: span, startTime: time.Now(), method: methodName}
 }
 
 func (swm *spanWithMetrics) setError(ctx context.Context, err error) {
-	// TODO: modify setError to accept context.
 	if err != nil {
 		swm.span.SetStatus(codes.Unknown)
 		swm.span.AddEvent(ctx, "error",
