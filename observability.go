@@ -85,14 +85,8 @@ func (swm *spanWithMetrics) setError(ctx context.Context, err error) {
 	if err != nil {
 		swm.span.SetStatus(codes.Unknown)
 		swm.span.AddEvent(ctx, "error",
-			core.KeyValue{
-				Key:   "error.type",
-				Value: core.String(reflect.TypeOf(err).String()),
-			},
-			core.KeyValue{
-				Key:   "error.message",
-				Value: core.String(err.Error()),
-			},
+			core.Key("error.type").String(reflect.TypeOf(err).String()),
+			core.Key("error.message").String(err.Error()),
 		)
 	}
 	swm.lastErr = err
